@@ -5,6 +5,7 @@ setup(
     name='picture-to-burn',
     packages=find_packages(),
     install_requires=[
+        'cssselect',
         'docopt',
         'lxml',
         'requests',
