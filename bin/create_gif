@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+r"""
+Convert something to a gif. Currently supports local .mp4 files and tweets.
+
+Usage:
+    create_gif <mp4>
+"""
+import os
+from docopt import docopt
+
+from picture_to_burn import mp4_to_gif, convert_tweet
+
+
+def convert(some_mp4: str):
+    if os.path.isfile(some_mp4):
+        mp4_to_gif(some_mp4)
+    elif 'twitter.com' in some_mp4:
+        convert_tweet(some_mp4)
+    else:
+        raise NotImplementedError(f"Can't find a way to convert {some_mp4} into a gif")
+
+
+if __name__ == '__main__':
+    args = docopt(__doc__)
+    convert(args['<mp4>'])
