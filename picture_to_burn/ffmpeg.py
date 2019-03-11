@@ -1,5 +1,4 @@
 import os
-import warnings
 from subprocess import Popen, DEVNULL
 
 
@@ -20,10 +19,6 @@ def mp4_to_gif(mp4_file: str, width: int) -> str:
     command = f'{ffmpeg} -i {mp4_file} -vf scale={width}:-2,fps=10 {gif}'
     with Popen(command.split(' '), stderr=DEVNULL) as p:
         p.wait()
-    size_mb = os.path.getsize(gif) / 1000000
-    if size_mb > 2:
-        warnings.warn(f"Gif created is {size_mb:.02f} MB, "
-                      f"and might not display in Slack")
 
     return gif
 

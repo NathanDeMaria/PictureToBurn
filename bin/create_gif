@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import warnings
 from fire import Fire
 
 from picture_to_burn import mp4_to_gif, find_mp4
@@ -16,7 +17,16 @@ def convert(some_mp4: str, width: int = 320):
     else:
         raise NotImplementedError(
             f"Can't find a way to convert {some_mp4} into a gif")
-    mp4_to_gif(some_mp4, width)
+    gif = mp4_to_gif(some_mp4, width)
+
+    size_mb = os.path.getsize(gif) / 1000000
+    if size_mb > 2:
+        warnings.warn(f"Gif created is {size_mb:.02f} MB, "
+                      f"and might not display in Slack. Making a smaller one.")
+        os.remove(gif)
+        gif = mp4_to_gif(some_mp4, width // 2)
+
+    print(f"Created gif: {gif}")
 
 
 if __name__ == '__main__':
