@@ -3,18 +3,21 @@ import warnings
 from subprocess import Popen, DEVNULL
 
 
-def mp4_to_gif(mp4_file: str) -> str:
+def mp4_to_gif(mp4_file: str, width: int) -> str:
     r"""
     Convert an .mp4 to a .gif with ffmpeg.
 
     :param mp4_file: Path to/url of an .mp4 file.
+    :param width: Width of the output gif in pixels.
     :return: Local path to the converted .gif
     """
-    path, mp4_name = os.path.split(mp4_file)
-    gif = os.path.join(path, f'{os.path.splitext(mp4_name)[0]}.gif')
+    _, mp4_name = os.path.split(mp4_file)
+    gif = f'{os.path.splitext(mp4_name)[0]}.gif'
+    if os.path.exists(gif):
+        raise FileExistsError(gif)
 
     ffmpeg = _get_binary()
-    command = f'{ffmpeg} -i {mp4_file} -vf scale=320:-1:flags=lanczos,fps=10 {gif}'
+    command = f'{ffmpeg} -i {mp4_file} -vf scale={width}:-2,fps=10 {gif}'
     with Popen(command.split(' '), stderr=DEVNULL) as p:
         p.wait()
     size_mb = os.path.getsize(gif) / 1000000
