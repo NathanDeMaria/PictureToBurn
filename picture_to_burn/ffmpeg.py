@@ -1,4 +1,5 @@
 import os
+import warnings
 from subprocess import Popen, DEVNULL
 
 
@@ -6,25 +7,30 @@ def mp4_to_gif(mp4_file: str) -> str:
     r"""
     Convert an .mp4 to a .gif with ffmpeg.
 
-    :param mp4_file: Path to an .mp4 file.
-    :return: Path to the converted .gif
+    :param mp4_file: Path to/url of an .mp4 file.
+    :return: Local path to the converted .gif
     """
     path, mp4_name = os.path.split(mp4_file)
     gif = os.path.join(path, f'{os.path.splitext(mp4_name)[0]}.gif')
 
     ffmpeg = _get_binary()
-    # TODO: are these flags enough to make sure it'll render on GitHub and in Slack?
     command = f'{ffmpeg} -i {mp4_file} -vf scale=320:-1:flags=lanczos,fps=10 {gif}'
     with Popen(command.split(' '), stderr=DEVNULL) as p:
         p.wait()
+    size_mb = os.path.getsize(gif) / 1000000
+    if size_mb > 2:
+        warnings.warn(f"Gif created is {size_mb:.02f} MB, "
+                      f"and might not display in Slack")
+
     return gif
 
 
-def _get_binary(path: str='ffmpeg') -> str:
+def _get_binary(path: str = 'ffmpeg') -> str:
     r"""
     Logic for finding the ffmpeg binary. Maybe steal from imageio eventually.
 
-    For now, this is pretty much just an attempt at better error messages when ffmpeg isn't installed.
+    For now, this is pretty much just an attempt
+    at better error messages when ffmpeg isn't installed.
 
     :param path: path to the ffmpeg binary.
     :return: path to the ffmpeg binary.
