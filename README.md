@@ -2,3 +2,19 @@
 # PictureToBurn
 
 A python package for gif-making.
+
+## Setup and Installation
+### Set up Twitter creds
+* Generate access token. Full instructions at https://developer.twitter.com/en/docs/basics/authentication/guides/access-tokens
+* Copy `twitter_creds.dist.json` to `twitter_creds.json`
+* Add token details to `twitter_creds.json`
+
+### Install
+```
+python setup.py install
+```
+
+## Running
+```
+create_gif [local_file | twitter_url]
+```

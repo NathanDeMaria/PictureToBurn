@@ -6,3 +6,7 @@
 # PyCharm
 .idea/
 
+build
+dist
+
+twitter_creds.json

@@ -1,2 +1,2 @@
 from .ffmpeg import mp4_to_gif
-from .twitter import find_mp4
+from .twitter_helper import find_video
