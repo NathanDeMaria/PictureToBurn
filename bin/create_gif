@@ -11,6 +11,8 @@ log.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 log.addHandler(ch)
 
+max_size = 2 #MB
+
 def convert(some_mp4: str, width: int = 320):
     """
     Convert something to a gif. Currently supports local .mp4 files and tweets.
@@ -29,7 +31,7 @@ def convert(some_mp4: str, width: int = 320):
     gif = mp4_to_gif(some_mp4, width)
 
     size_mb = _get_size(gif)
-    while size_mb > 2:
+    while size_mb > max_size:
         log.info(f"Width {width}")
         warnings.warn(f"Gif created is {size_mb:.02f} MB, "
                       f"and might not display in Slack. Making a smaller one.")
