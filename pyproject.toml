@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "picture-to-burn"
+version = "0.1.0"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+cssselect = "^1.1.0"
+docopt = "^0.6.2"
+lxml = "^4.9.1"
+requests = "^2.28.1"
+fire = "^0.4.0"
+
+[tool.poetry.dev-dependencies]
+black = "^22.6.0"
+pytest = "^7.1.2"
+pylint = "^2.14.4"
+mypy = "^0.961"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+create_gif = 'picture_to_burn.cli:main'

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import os
 import warnings
 from fire import Fire
@@ -39,5 +38,9 @@ def _is_ffmpegable_url(s: str) -> bool:
     return ext in FFMPEGABLE
 
 
-if __name__ == '__main__':
+def main():
     Fire(convert)
+
+
+if __name__ == '__main__':
+    main()
