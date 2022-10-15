@@ -1,5 +1,8 @@
-import requests
-from lxml.html import fromstring
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+from .browser import create_driver
 
 
 def find_mp4(tweet_url: str) -> str:
@@ -9,12 +12,9 @@ def find_mp4(tweet_url: str) -> str:
     :param tweet_url: URL for a tweet with a video.
     :return: URL of the mp4 itself.
     """
-    # TODO: error nicely if the tweet isn't found
-    tweet_html = requests.get(tweet_url)
-
-    # TODO: error nicely if there's some kind of parsing error
-    tree = fromstring(tweet_html.content)
-    video_div = tree.cssselect('.PlayableMedia-player')[0]
-    player_style = video_div.attrib['style'].split('/')[-1]
-    media_id = player_style.split('.')[0]
-    return f'https://video.twimg.com/tweet_video/{media_id}.mp4'
+    with create_driver() as driver:
+        driver.get(tweet_url)
+        target_element = (By.TAG_NAME, "video")
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located(target_element))
+        video = driver.find_element(*target_element)
+        return video.get_attribute("src")
