@@ -39,5 +39,6 @@
   ],
   "mounts": [
     "source=picture-to-burn-bashhistory,target=/commandhistory,type=volume"
-  ]
+  ],
+  "initializeCommand": "poetry install"
 }
